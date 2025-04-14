@@ -9,7 +9,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s ',
-    title: 'Node Mysql App',
+    title: 'Cali-Nation',
     htmlAttrs: {
       lang: 'en'
     },
@@ -20,7 +20,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.jpg' }
     ]
   },
 

@@ -187,7 +187,12 @@
                               </div>
                               <div class="d-flex" style="margin: 8px">
                                 <!-- <v-icon small>mdi-chat</v-icon> -->
-                                <strong style="font-size: 0.9rem; font-weight: 300"
+                                <strong
+                                  style="
+                                    font-size: 0.9rem;
+                                    font-weight: 300;
+                                    color: green;
+                                  "
                                   >Negotiable</strong
                                 >
                               </div>
@@ -276,9 +281,10 @@
                                 small
                                 @click="
                                   (row = null),
+                                    loginAnonymously(),
                                     FetchItem(all_product.id),
                                     (count = 1),
-                                    (select_size = ''),
+                                    (select_size = all_product.cloth_size),
                                     (cloth_image = all_product.cloth_image),
                                     (cloth_name = all_product.cloth_name),
                                     (cloth_type = all_product.cloth_type),
@@ -428,8 +434,7 @@
                   <v-row class="">
                     <V-col cols="12" md="6" lg="6" sm="12">
                       <v-img
-                        height="250"
-                        max-height="250"
+                        height="350"
                         class="align-end"
                         cover
                         :contain="true"
@@ -473,7 +478,7 @@
                       </div>
                       <hr style="color: #808080" />
                       <div class="container">
-                        <h3>Select a size</h3>
+                        <h3>Available a size</h3>
                         <v-radio-group v-model="row" row>
                           <v-radio
                             v-show="S"
@@ -502,7 +507,7 @@
                         </v-radio-group>
                       </div>
 
-                      <div class="container">
+                      <!-- <div class="container" v-show="false">
                         <h3>Select Quantity</h3>
                         <div class="d-flex">
                           <span
@@ -525,29 +530,18 @@
                             </h3>
                           </h4>
                         </div>
-                      </div>
+                      </div> -->
                       <v-btn
                         density="compact"
                         color="black"
                         id="cart_btn"
                         @click="checkCurrentState(total_amount)"
-                        >Add <v-icon>mdi-plus</v-icon></v-btn
+                        >Add to cart <v-icon>mdi-plus</v-icon></v-btn
                       >
                     </V-col>
                     <!-- FetchUser(), checkOrder() -->
                     <V-col v-show="!showauth">
-                      <v-row align="center" justify="center">
-                        <v-col v-show="false" cols="12" md="6" lg="6" sm="12"
-                          ><v-btn text color="primary" @click="signUpFacebook">
-                            <v-icon>mdi-facebook</v-icon>&nbsp;Log in with facebook
-                          </v-btn></v-col
-                        >
-                        <v-col cols="12" md="6" lg="6" sm="12"
-                          ><v-btn text color="red" @click="signUpGoogle">
-                            <v-icon>mdi-google</v-icon>&nbsp;Log in with google
-                          </v-btn></v-col
-                        >
-                      </v-row>
+                      <v-row align="center" justify="center"> </v-row>
                     </V-col>
                   </v-row>
                 </div>
@@ -558,7 +552,6 @@
       </v-dialog>
       <v-snackbar
         color="pink"
-        :timeout="18000"
         v-model="snackbar_login"
         top
         right
@@ -981,6 +974,8 @@ export default {
         .then((user) => {
           that.showLogin = false;
           this.userAuth = true;
+          that.snackbarText = user;
+          that.snackbar = true;
           //we are signed in
         });
     },
