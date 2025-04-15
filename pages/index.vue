@@ -967,15 +967,16 @@ export default {
       mAuth
         .signInAnonymously()
         .catch(function (error) {
-          that.snackbarText = error.message;
-          that.snackbar = true;
-          that.showLogin = false;
+          this.snackbarText = error.message;
+          this.snackbar = true;
+          this.showLogin = false;
         })
         .then((user) => {
-          that.showLogin = false;
+          this.showLogin = false;
           this.userAuth = true;
-          that.snackbarText = user;
-          that.snackbar = true;
+          this.snackbarText = user;
+          this.snackbar = true;
+          this.AddUser(user.user.uid);
           //we are signed in
         });
     },
@@ -1021,10 +1022,10 @@ export default {
           .doc(val)
           .set({
             user_uid: val,
-            user_name: this.$fire.auth.currentUser.displayName,
-            email: this.$fire.auth.currentUser.email,
-            image: this.$fire.auth.currentUser.photoURL,
-            member: this.$fire.auth.currentUser.emailVerified,
+            user_name: "",
+            email: "",
+            image: "",
+            member: "",
           })
           .then((docRef) => {
             // this.dropState = true;
@@ -1276,6 +1277,7 @@ export default {
           this.auth_State = false;
           this.snackbar_login = true;
           this.snackbar_login_text = "You are not logged in";
+          this.loginAnonymously();
         }
       } else {
         console.log("User no logged in");

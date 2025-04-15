@@ -2,7 +2,7 @@
   <div class="container">
     <div class="container">
       <div class="d-flex">
-        <v-btn color="black" large icon to="/the-petite-studio">
+        <v-btn color="black" large icon to="/">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
@@ -18,12 +18,15 @@
           <div class="container">
             <p>Below are details of your order</p>
             <div>
-              <h3>
-                Total PayOut: <strong>{{ total }}</strong>
-              </h3>
-              <h3>
+              <span>
+                Total Pay Out: <strong>{{ total }}</strong>
+              </span>
+              <br />
+            </div>
+            <div>
+              <span>
                 No of Item: <strong>{{ cart_Count }}</strong>
-              </h3>
+              </span>
             </div>
             <br />
           </div>
@@ -41,8 +44,9 @@
             ></v-select>
             <div class="container">
               <div v-show="showCard2">
-                <h4>PayBill: 880100</h4>
-                <h4>Account No: 52480550017</h4>
+                <h3 style="color: green">Pochi la Biashara</h3>
+                <h4>Elmasha Omondi</h4>
+                <h4>Phone No: 52480550017</h4>
 
                 <!-- <div class="d-flex">
                   <h4>NB:</h4>
@@ -57,32 +61,45 @@
                 >{{ pay_method }}</span
               >
             </div>
-          </div>
-          <div class="container">
-            <br />
-            <v-btn
-              block
-              color="black"
-              large
-              id="btn_checkout"
-              @click="viewItemDialog = true"
-            >
-              Check Out
-            </v-btn>
-            <br />
-            <v-btn block color="black" large text @click="dialog_cart = true">
-              Clear Cart
-            </v-btn>
+            <div class="container">
+              <!-- From Uiverse.io by kennyotsu -->
+              <div class="notifications-container">
+                <div class="info">
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <svg
+                        class="info-svg"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                          clip-rule="evenodd"
+                        ></path>
+                      </svg>
+                    </div>
+                    <div class="info-prompt-wrap">
+                      <p class="">
+                        Kindly provide your mpesa payment details after payments are
+                        made..
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </v-col>
-        <v-col cols="12" md="7" lg="7" sm="12">
+        <v-col cols="12" md="6">
           <div class="text-center">
             <h3><strong>My Cart List</strong></h3>
           </div>
           <div id="items_view">
             <div style="margin: 80px" v-show="!cart" class="text-center">
-              <v-img cover height="80" :contain="true" :src="empty_cart">
-              </v-img>
+              <v-img cover height="80" :contain="true" :src="empty_cart"> </v-img>
               <h4 class="text-center" style="color: #808080">Cart Empty</h4>
             </div>
             <v-card elevation="0">
@@ -100,9 +117,9 @@
                       :key="cart_list.id"
                       :id="cart_list.id"
                       :cart_list="cart_list.cart_list"
-                      class="col-md-4"
-                      align="center"
-                      justify="center"
+                      class="col-sm-3"
+                      align="start"
+                      justify="start"
                     >
                       <v-card
                         align="center"
@@ -127,15 +144,8 @@
                           </v-btn>
                         </div>
                         <div id="clothImage">
-                          <nuxt-img
-                            fit="cover"
-                            width="180"
-                            height="180"
-                            :quality="30"
-                            placeholder
-                            :src="cart_list.item_image"
-                          >
-                          </nuxt-img>
+                          <v-img contain height="100" :src="cart_list.item_image">
+                          </v-img>
                         </div>
 
                         <v-card-actions>
@@ -144,16 +154,13 @@
                               <strong>
                                 <h4>{{ cart_list.item_name }}</h4></strong
                               >
-                              Size
-                              <h4>{{ cart_list.item_size }}</h4>
                             </div>
                             <div id="pricing">
-                              <h4>Qty {{ cart_list.item_quantity }}</h4>
                               <span
-                                ><h2 id="price">
+                                ><h4 id="price">
                                   ksh/<span>.</span
                                   ><strong>{{ cart_list.item_price }}</strong>
-                                </h2>
+                                </h4>
                               </span>
                             </div>
                             <br />
@@ -181,31 +188,32 @@
             </v-card>
           </div>
         </v-col>
+
+        <v-col cols="12" md="6" lg="6"> </v-col>
+
+        <v-col cols="12" md="12">
+          <div class="container">
+            <br />
+            <v-btn
+              block
+              color="black"
+              large
+              id="btn_checkout"
+              @click="viewItemDialog = true"
+            >
+              <div class="d-flex">
+                <h4 style="margin: 4px">Paste M-pesa Reciept</h4>
+                <v-icon>mdi-content-paste</v-icon>
+              </div>
+            </v-btn>
+            <br />
+            <v-btn block color="red" large text @click="dialog_cart = true">
+              Clear Cart
+            </v-btn>
+          </div>
+        </v-col>
       </v-row>
     </div>
-    <v-row v-show="true">
-      <v-col cols="12" sm="12" md="12">
-        <div class="container">
-          <div>
-            <h4 id="body_h5"><strong>Shipping Policy & Delivery</strong></h4>
-            <p id="p_body">
-              We ship worldwide Via DHL, cost of shipping belongs to the buyer
-              and is based on delivery destination. Orders are dispatched within
-              24 -48 hrs of payments.
-            </p>
-          </div>
-          <div>
-            <h4 id="body_h5"><strong>Returns & Exchange</strong></h4>
-            <p id="p_body">
-              Please inspect your order upon reception & contact us immediately
-              if the item is wrong or damaged. We evaluate and make it right We
-              don’t do cash refunds.You are however open to exchange the item or
-              another.Applicable within 2 days
-            </p>
-          </div>
-        </div>
-      </v-col>
-    </v-row>
 
     <v-dialog v-model="viewItemDialog" width="800" min-width="400">
       <v-row align="center" justify="center">
@@ -227,7 +235,7 @@
                         <v-text-field
                           v-model="user_name"
                           :counter="18"
-                          label="Name"
+                          label="Mpesa user name"
                         ></v-text-field>
 
                         <v-text-field
@@ -238,15 +246,12 @@
 
                         <v-text-field
                           v-model="email"
-                          label="E-mail"
+                          label="Mpesa Receipt"
                         ></v-text-field>
                         <v-text-field
-                          v-model="location"
-                          label="Location"
-                        ></v-text-field>
-                        <v-text-field
-                          v-model="landMark"
-                          label="LandMark"
+                          v-model="total"
+                          disabled
+                          label="Total amount"
                         ></v-text-field>
 
                         <v-checkbox
@@ -263,7 +268,7 @@
                           @click="checkPayState(pay_method)"
                           color="black"
                         >
-                          Place Order
+                          Confirm your Order
                         </v-btn>
 
                         <v-btn text v-show="showCard">
@@ -302,10 +307,10 @@
                         <h5 id="body_h5">
                           <strong>Shipping Policy & Delivery</strong>
                         </h5>
-                        <p id="p_body">
-                          We ship worldwide Via DHL, cost of shipping belongs to
-                          the buyer and is based on delivery destination. Orders
-                          are dispatched within 24 -48 hrs of payments.
+                        <p id="p_body" style="color: grey">
+                          <!-- We ship worldwide Via DHL, cost of shipping belongs to the buyer
+                          and is based on delivery destination.  -->
+                          Orders are dispatched within 24 -48 hrs of payments.
                         </p>
                       </div>
                       <div>
@@ -313,12 +318,11 @@
                           <strong>Returns & Exchange</strong>
                         </h5>
 
-                        <p id="p_body">
+                        <p id="p_body" style="color: grey">
                           Please inspect your order upon reception & contact us
-                          immediately if the item is wrong or damaged. We
-                          evaluate and make it right We don’t do cash
-                          refunds.You are however open to exchange the item or
-                          another.Applicable within 2 days
+                          immediately if the item is wrong or damaged. We evaluate and
+                          make it right We don’t do cash refunds.You are however open to
+                          exchange the item or another.Applicable within 2 days
                         </p>
                       </div>
                     </div>
@@ -344,9 +348,7 @@
             <v-row class="text-center">
               <V-col cols="12" md="12" lg="12" sm="12">
                 <div class="text-center container">
-                  <h3 id="logout_text">
-                    Are you sure you want to clear this Cart.
-                  </h3>
+                  <h3 id="logout_text">Are you sure you want to clear this Cart.</h3>
                 </div>
               </V-col>
 
@@ -370,14 +372,7 @@
                   >Yes
                 </v-btn></v-col
               >
-              <v-col
-                cols="12"
-                md="12"
-                lg="12"
-                sm="12"
-                align="center"
-                justify="center"
-              >
+              <v-col cols="12" md="12" lg="12" sm="12" align="center" justify="center">
                 <v-progress-linear
                   v-show="progress_bar"
                   indeterminate
@@ -404,9 +399,7 @@
             <v-row class="text-center">
               <V-col cols="12" md="12" lg="12" sm="12">
                 <div class="text-center container">
-                  <h3 id="logout_text">
-                    Delete this item from your Cart List.
-                  </h3>
+                  <h3 id="logout_text">Delete this item from your Cart List.</h3>
                 </div>
               </V-col>
 
@@ -430,14 +423,7 @@
                   >Yes
                 </v-btn></v-col
               >
-              <v-col
-                cols="12"
-                md="12"
-                lg="12"
-                sm="12"
-                align="center"
-                justify="center"
-              >
+              <v-col cols="12" md="12" lg="12" sm="12" align="center" justify="center">
                 <v-progress-linear
                   v-show="progress_bar"
                   indeterminate
@@ -453,14 +439,7 @@
     <v-snackbar color="white--text" :timeout="4000" v-model="snackbar" center>
       {{ snackbarText }}
     </v-snackbar>
-    <v-snackbar
-      color="red"
-      :timeout="4000"
-      v-model="snackbar2"
-      outlined
-      bottom
-      center
-    >
+    <v-snackbar color="red" :timeout="4000" v-model="snackbar2" outlined bottom center>
       {{ snackbarText2 }}
     </v-snackbar>
   </div>
@@ -474,7 +453,7 @@ export default {
       showCard: false,
       showCard2: false,
       pay_method: "",
-      payments: ["Cash on Delivery", "Mpesa"],
+      payments: ["Mpesa"],
       item_ids: null,
       item_prices: null,
       progress_bar: false,
@@ -571,9 +550,7 @@ export default {
         console.log("Minus ", val, "successful ID", val2);
         // Create a reference to the SF doc.
         const db = this.$fire.firestore;
-        var sfDocRef = db
-          .collection("Order_request")
-          .doc(this.$route.params.id);
+        var sfDocRef = db.collection("Order_request").doc(this.$route.params.id);
 
         return db
           .runTransaction((transaction) => {
@@ -620,8 +597,7 @@ export default {
         .then((queryResult) => {
           queryResult.forEach((doc) => {
             console.log("user details", doc.data());
-            (this.user_name = doc.data().user_name),
-              (this.email = doc.data().email);
+            (this.user_name = doc.data().user_name), (this.email = doc.data().email);
             this.uid = doc.data().user_uid;
           });
         });
@@ -871,9 +847,7 @@ export default {
     async DeleteCartItem(val) {
       const db = this.$fire.firestore;
 
-      var cart_ref = db
-        .collection("item_list")
-        .where("item_id", "==", post.job_id);
+      var cart_ref = db.collection("item_list").where("item_id", "==", post.job_id);
       let batch = firestore.batch();
 
       cart_ref.get().then((snapshot) => {
@@ -995,6 +969,53 @@ export default {
 nuxt-link {
   text-decoration-line: none;
 }
+/* From Uiverse.io by kennyotsu */
+.notifications-container {
+  width: 320px;
+  height: auto;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.info {
+  background-color: rgb(239, 246, 255);
+  border-left-width: 4px;
+  border-radius: 0.375rem;
+  padding: 1rem;
+}
+
+.info-svg {
+  height: 1.25rem;
+  width: 1.25rem;
+  opacity: 70%;
+  color: rgb(255, 255, 255);
+}
+
+.info-prompt-wrap {
+  margin-left: 0.75rem;
+  color: rgb(23, 23, 24);
+}
+
+.info-prompt-link {
+  font-weight: 500;
+  color: rgb(0, 0, 0);
+  text-decoration: underline;
+}
+
+.info-prompt-link:hover {
+  color: rgb(237, 238, 240);
+}
 #btn_checkout {
   color: #fff;
 }
@@ -1003,7 +1024,7 @@ nuxt-link {
   width: 100%;
 }
 p {
-  color: #808080;
+  color: #ffffff;
 }
 #items_view {
   --scrollbarBG: #ffffff;
