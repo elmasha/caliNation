@@ -222,7 +222,8 @@
             <div class="">
               <div class="container">
                 <div class="d-flex">
-                  <div class="text-center container"></div>
+                  <div class="container"><h4>Provide these to confirm you order</h4></div>
+
                   <v-spacer></v-spacer>
                   <v-btn icon color="red" @click="viewItemDialog = false"
                     ><v-icon>mdi-close</v-icon></v-btn
@@ -245,9 +246,11 @@
                         ></v-text-field>
 
                         <v-text-field
-                          v-model="email"
+                          v-model="mpesa_receipt"
                           label="Mpesa Receipt"
                         ></v-text-field>
+                        <v-text-field v-model="location" label="Location"></v-text-field>
+                        <v-text-field v-model="landMark" label="Land mark"></v-text-field>
                         <v-text-field
                           v-model="total"
                           disabled
@@ -449,6 +452,8 @@ import axios from "axios";
 export default {
   data() {
     return {
+      county: null,
+      location: null,
       checkoutUrl: "",
       showCard: false,
       showCard2: false,
@@ -468,6 +473,7 @@ export default {
       cart_Count: 0,
       user_name: "",
       phone_number: "",
+      mpesa_receipt: "",
       location: "",
       landMark: "",
       email: "",
@@ -491,10 +497,17 @@ export default {
     };
   },
   methods: {
-    checkPayState(val) {
-      if (val == "Card") {
+    checkCategoryState(val) {
+      if (val == "Clothing") {
         this.PlaceOrder();
-      } else if (val == "Mpesa") {
+      } else if (val == "Accessories") {
+        this.PlaceOrder2();
+      } else if (val == "Shoes") {
+        this.PlaceOrder2();
+      }
+    },
+    checkPayState(val) {
+      if (val == "Mpesa") {
         this.PlaceOrder2();
       }
     },
@@ -676,10 +689,11 @@ export default {
     async PlaceOrder2() {
       if (
         (this.user_name == "") |
-        (this.email == "") |
+        (this.mpesa_receipt == "") |
         (this.phone_number == "") |
         (this.location == "") |
         (this.landMark == "")
+        
       ) {
         this.snackbar2 = true;
         this.snackbarText2 = "Provide the Details Required";
@@ -694,13 +708,14 @@ export default {
             user_name: this.user_name,
             location: this.location,
             land_mark: this.landMark,
-            email: this.email,
+            mpesa_receipt: this.mpesa_receipt,
             phone: this.phone_number,
             payment_method: this.pay_method,
             order_status: 0,
             timestamp: new Date(),
             cart: false,
-            paid: false,
+            paid: true,
+            total: this.total,
           })
           .then((docRef) => {
             // this.dropState = true;

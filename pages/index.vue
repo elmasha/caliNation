@@ -90,7 +90,7 @@
             class="black--text"
             dark
           >
-            <v-icon>mdi-refresh</v-icon>
+            <v-icon>mdi-new-box</v-icon>
             New Arrival
           </v-tab>
           <v-menu offset-y open-on-hover>
@@ -168,26 +168,42 @@
                         class="col-sm-3"
                       >
                         <div class="container">
-                          <v-card elevation="0">
+                          <v-card elevation="0" max-width="310">
                             <v-img
                               :src="all_product.cloth_image"
                               class="white--text align-end"
                               height="300px"
-                              contain
+                              cover
                             >
                               <!-- <v-avatar color="#8051FF" style="margin: 8px">
                           <v-img :src="tag.logo_url" contain alt="John" height="200" />
                         </v-avatar> -->
-                            </v-img>
-                            <div>
+
                               <div>
-                                <h2 style="font-size: 1.2rem; margin: 0px">
+                                <v-chip
+                                  v-show="!checkTypeState(all_product.cloth_type)"
+                                  color="black"
+                                  style="
+                                    font-size: 0.9rem;
+                                    font-weight: 300;
+                                    color: white;
+                                    margin: 8px;
+                                  "
+                                >
+                                  {{ all_product.cloth_size }}</v-chip
+                                >
+                              </div>
+                            </v-img>
+                            <div class="conatiner">
+                              <div>
+                                <h2 style="font-size: 1.2rem; margin: 8px">
                                   {{ all_product.cloth_name }}
                                 </h2>
                               </div>
                               <div class="d-flex" style="margin: 8px">
                                 <!-- <v-icon small>mdi-chat</v-icon> -->
                                 <strong
+                                  v-show="all_product.Negotiable"
                                   style="
                                     font-size: 0.9rem;
                                     font-weight: 300;
@@ -195,31 +211,11 @@
                                   "
                                   >Negotiable</strong
                                 >
+                                <v-spacer></v-spacer>
                               </div>
+
                               <div>
                                 <v-row>
-                                  <v-col
-                                    cols="6"
-                                    v-show="checkSizeState(all_product.cloth_category)"
-                                  >
-                                    <div class="d-flex">
-                                      <span>
-                                        <v-icon small color="black">mdi-hanger</v-icon>
-                                        size -
-                                      </span>
-                                      <div v-show="all_product.S">
-                                        <h4><strong>S</strong></h4>
-                                      </div>
-
-                                      <div v-show="all_product.M">
-                                        <h4><strong>M</strong></h4>
-                                      </div>
-
-                                      <div v-show="all_product.L">
-                                        <h4><strong>L</strong></h4>
-                                      </div>
-                                    </div></v-col
-                                  >
                                   <v-col
                                     cols="6"
                                     v-show="!checkSizeState(all_product.cloth_category)"
@@ -622,7 +618,7 @@ export default {
         (v) => !!v || "Field is required",
         (v) => (v && v.length <= 18) || "Field must be less than 10 characters",
       ],
-      items22: [{ title: "Women style" }, { title: "Men style" }],
+      items22: [{ title: "Women" }, { title: "Men" }, { title: "Unisex" }],
       items: [
         {
           icon: "mdi-home",
@@ -743,6 +739,22 @@ export default {
     },
   },
   methods: {
+    checkTypeState(val) {
+      if (val == "Trouser") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    checkCategoryState(val) {
+      if (val == "Clothing") {
+        this.PlaceOrder();
+      } else if (val == "Accessories") {
+        this.PlaceOrder2();
+      } else if (val == "Shoes") {
+        this.PlaceOrder2();
+      }
+    },
     checkSizeState(val) {
       if (val == "Clothing") {
         return true;
@@ -1277,7 +1289,7 @@ export default {
           this.auth_State = false;
           this.snackbar_login = true;
           this.snackbar_login_text = "You are not logged in";
-          this.loginAnonymously();
+          // this.loginAnonymously();
         }
       } else {
         console.log("User no logged in");
@@ -1355,6 +1367,7 @@ export default {
       const db = this.$fire.firestore;
       this.new_products.splice(this.new_products);
       db.collection("My_Stock")
+        .where("sold", "==", false)
         .where("cloth_status", "==", "New arrival")
         .get()
         .then((queryResult6) => {
@@ -1437,8 +1450,10 @@ export default {
                 cloth_size: doc.data().cloth_size,
                 cloth_price: doc.data().cloth_price,
                 cloth_type: doc.data().cloth_type,
+                waist_size: doc.data().waist_size,
                 cloth_discount: doc.data().discount,
                 All_size: doc.data().All_size,
+                Negotiable: doc.data().Negotiable,
                 S: doc.data().S,
                 M: doc.data().M,
                 L: doc.data().L,
@@ -1465,7 +1480,13 @@ export default {
                 cloth_size: doc.data().cloth_size,
                 cloth_price: doc.data().cloth_price,
                 cloth_type: doc.data().cloth_type,
+                waist_size: doc.data().waist_size,
                 cloth_discount: doc.data().discount,
+                All_size: doc.data().All_size,
+                Negotiable: doc.data().Negotiable,
+                S: doc.data().S,
+                M: doc.data().M,
+                L: doc.data().L,
               };
               this.queryCart_id = data.cloth_name + data.cloth_type + data.cloth_category;
               this.products.push(data);
@@ -1480,7 +1501,8 @@ export default {
         const db = this.$fire.firestore;
         this.all_products.splice(this.all_products);
         db.collection("My_Stock")
-          .where("cloth_status", "==", val)
+          .where("sold", "==", false)
+          .where("tag", "==", val)
           .get()
           .then((queryResult6) => {
             queryResult6.forEach((doc) => {
@@ -1506,6 +1528,7 @@ export default {
         const db = this.$fire.firestore;
         this.all_products.splice(this.all_products);
         db.collection("My_Stock")
+          .where("sold", "==", false)
           .get()
           .then((queryResult6) => {
             queryResult6.forEach((doc) => {
@@ -1516,9 +1539,11 @@ export default {
                 cloth_image: doc.data().cloth_image,
                 cloth_size: doc.data().cloth_size,
                 cloth_price: doc.data().cloth_price,
-                cloth_size: doc.data().cloth_size,
                 cloth_type: doc.data().cloth_type,
+                waist_size: doc.data().waist_size,
+                cloth_discount: doc.data().discount,
                 All_size: doc.data().All_size,
+                Negotiable: doc.data().Negotiable,
                 S: doc.data().S,
                 M: doc.data().M,
                 L: doc.data().L,
@@ -1532,6 +1557,7 @@ export default {
         const db = this.$fire.firestore;
         this.all_products.splice(this.all_products);
         db.collection("My_Stock")
+          .where("sold", "==", false)
           .where("cloth_category", "==", val)
           .get()
           .then((queryResult6) => {
@@ -1543,8 +1569,14 @@ export default {
                 cloth_image: doc.data().cloth_image,
                 cloth_size: doc.data().cloth_size,
                 cloth_price: doc.data().cloth_price,
-                cloth_size: doc.data().cloth_size,
                 cloth_type: doc.data().cloth_type,
+                waist_size: doc.data().waist_size,
+                cloth_discount: doc.data().discount,
+                All_size: doc.data().All_size,
+                Negotiable: doc.data().Negotiable,
+                S: doc.data().S,
+                M: doc.data().M,
+                L: doc.data().L,
               };
               this.all_products.push(data);
               console.log(this.all_products);
@@ -1576,6 +1608,7 @@ export default {
         this.all_products.splice(this.all_products);
         const db = this.$fire.firestore;
         db.collection("My_Stock")
+          .where("sold", "==", false)
           .where("cloth_type", "==", val)
           .get()
           .then((queryResult7) => {
@@ -1588,9 +1621,11 @@ export default {
                 cloth_image: doc.data().cloth_image,
                 cloth_size: doc.data().cloth_size,
                 cloth_price: doc.data().cloth_price,
-                cloth_size: doc.data().cloth_size,
                 cloth_type: doc.data().cloth_type,
+                waist_size: doc.data().waist_size,
+                cloth_discount: doc.data().discount,
                 All_size: doc.data().All_size,
+                Negotiable: doc.data().Negotiable,
                 S: doc.data().S,
                 M: doc.data().M,
                 L: doc.data().L,
@@ -1608,6 +1643,7 @@ export default {
         const db = this.$fire.firestore;
         this.all_products.splice(this.all_products);
         db.collection("My_Stock")
+          .where("sold", "==", false)
           .where("cloth_gender", "==", val)
           .get()
           .then((queryResult6) => {
@@ -1619,9 +1655,11 @@ export default {
                 cloth_image: doc.data().cloth_image,
                 cloth_size: doc.data().cloth_size,
                 cloth_price: doc.data().cloth_price,
-                cloth_size: doc.data().cloth_size,
                 cloth_type: doc.data().cloth_type,
+                waist_size: doc.data().waist_size,
+                cloth_discount: doc.data().discount,
                 All_size: doc.data().All_size,
+                Negotiable: doc.data().Negotiable,
                 S: doc.data().S,
                 M: doc.data().M,
                 L: doc.data().L,
@@ -1638,6 +1676,7 @@ export default {
         const db = this.$fire.firestore;
         this.all_products.splice(this.all_products);
         db.collection("My_Stock")
+          .where("sold", "==", false)
           .where("cloth_gender", "==", val)
           .get()
           .then((queryResult6) => {
@@ -1649,9 +1688,11 @@ export default {
                 cloth_image: doc.data().cloth_image,
                 cloth_size: doc.data().cloth_size,
                 cloth_price: doc.data().cloth_price,
-                cloth_size: doc.data().cloth_size,
                 cloth_type: doc.data().cloth_type,
+                waist_size: doc.data().waist_size,
+                cloth_discount: doc.data().discount,
                 All_size: doc.data().All_size,
+                Negotiable: doc.data().Negotiable,
                 S: doc.data().S,
                 M: doc.data().M,
                 L: doc.data().L,
@@ -1668,6 +1709,7 @@ export default {
         const db = this.$fire.firestore;
         this.all_products.splice(this.all_products);
         db.collection("My_Stock")
+          .where("sold", "==", false)
           .where("cloth_type", "==", val)
           .get()
           .then((queryResult6) => {
@@ -1679,9 +1721,11 @@ export default {
                 cloth_image: doc.data().cloth_image,
                 cloth_size: doc.data().cloth_size,
                 cloth_price: doc.data().cloth_price,
-                cloth_size: doc.data().cloth_size,
                 cloth_type: doc.data().cloth_type,
+                waist_size: doc.data().waist_size,
+                cloth_discount: doc.data().discount,
                 All_size: doc.data().All_size,
+                Negotiable: doc.data().Negotiable,
                 S: doc.data().S,
                 M: doc.data().M,
                 L: doc.data().L,

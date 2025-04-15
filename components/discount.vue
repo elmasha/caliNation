@@ -5,13 +5,9 @@
         <v-col>
           <v-card elevation="0">
             <v-card-actions>
-              <div class="d-flex">
-                <v-spacer></v-spacer>
-                <v-btn @click="Refresh" color="grey" icon medium>
-                  Refresh
-                  <v-icon>mdi-refresh</v-icon>
-                </v-btn>
-              </div>
+              <v-btn @click="Refresh" color="grey" icon medium>
+                <v-icon>mdi-refresh</v-icon>
+              </v-btn>
 
               <div class="container col-md-6">
                 <v-btn color="primary" icon large>
@@ -65,44 +61,10 @@
                   :key="cart_list.id"
                   :id="cart_list.id"
                   :cart_list="cart_list.cart_list"
-                  class="col-md-6 text-center"
+                  class="col-sm-3 text-center"
                   align="center"
                   justify="center"
                 >
-                  <div class="row text-center">
-                    <div>
-                      <v-btn
-                        icon
-                        color="red"
-                        @click="(dialog_delete = true), (item_id = cart_list.id)"
-                        ><v-icon>mdi-delete</v-icon></v-btn
-                      >
-                    </div>
-                    <div>
-                      <v-btn
-                        icon
-                        color="primary"
-                        @click="
-                          (updateItemDialog = true),
-                            (item_id = cart_list.id),
-                            (cloth_image = cart_list.cloth_image),
-                            (cloth_name = cart_list.cloth_name),
-                            (cloth_category = cart_list.cloth_category),
-                            (cloth_gender = cart_list.cloth_gender),
-                            (cloth_status = cart_list.cloth_status),
-                            (cloth_type = cart_list.cloth_type),
-                            (cloth_description = cart_list.cloth_desc),
-                            (cloth_price = cart_list.cloth_price),
-                            (cloth_size = cart_list.cloth_size),
-                            (cloth_discount = cart_list.cloth_discount),
-                            (S = cart_list.S),
-                            (M = cart_list.M),
-                            (L = cart_list.L)
-                        "
-                        ><v-icon>mdi-update</v-icon></v-btn
-                      >
-                    </div>
-                  </div>
                   <v-card
                     align="center"
                     justify="center"
@@ -130,67 +92,21 @@
                             ></v-progress-circular>
                           </v-row>
                         </template>
+                        <v-chip color="red" v-show="cart_list.sold" style="color: white"
+                          >SOlD OUT</v-chip
+                        >
                       </v-img>
                     </div>
 
                     <v-card-actions>
-                      <div class="px-0 container">
-                        <div class="" style="margin: 2px">
-                          <v-switch
-                            @click="updateStatus(cart_list.discount, cart_list.id)"
-                            color="pink"
-                            v-model="cart_list.discount"
-                            :label="`Discount: ${DiscountLabel(cart_list.discount)}`"
-                          ></v-switch>
-                          <div class="container text-center">
-                            <div class="d-flex">
-                              <v-switch
-                                @click="updateStatus1(cart_list.S, cart_list.id)"
-                                color="pink"
-                                v-model="cart_list.S"
-                                :label="`S ${cart_list.S}`"
-                              ></v-switch>
-                              <v-switch
-                                @click="updateStatus2(cart_list.M, cart_list.id)"
-                                color="pink"
-                                v-model="cart_list.M"
-                                :label="`M ${cart_list.M}`"
-                              ></v-switch>
-                              <v-switch
-                                @click="updateStatus3(cart_list.L, cart_list.id)"
-                                color="pink"
-                                v-model="cart_list.L"
-                                :label="`L ${cart_list.L}`"
-                              ></v-switch>
-                            </div>
-                            <div>
-                              <div>
-                                <div class="d-flex">
-                                  <span>
-                                    <v-icon>mdi-hanger</v-icon>
-                                  </span>
-                                  <div v-show="cart_list.S"><h4>S</h4></div>
-                                  -
-                                  <div v-show="cart_list.M"><h4>M</h4></div>
-                                  -
-                                  <div v-show="cart_list.L"><h4>L</h4></div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                      <div class="container">
+                        <div class="" style="margin: 0px">
                           <div>
                             <h4>{{ cart_list.cloth_name }}</h4>
+                            <strong>{{ cart_list.cloth_price }}</strong>
                           </div>
-                          <div class="">
-                            <h4>{{ cart_list.cloth_type }}</h4>
-                          </div>
+
                           <div style="margin: 0px" id="pricing">
-                            <span
-                              ><h4>
-                                <v-icon>mdi-cash-multiple</v-icon>
-                                <strong>{{ cart_list.cloth_price }}</strong>
-                              </h4>
-                            </span>
                             <span v-show="cart_list.discount"
                               ><h4>
                                 <span>{{ discount_per }}</span
@@ -198,6 +114,60 @@
                                 <strong>{{ discount(cart_list.cloth_price) }}</strong>
                               </h4>
                             </span>
+                          </div>
+                          <div class="row">
+                            <v-switch
+                              color="pink"
+                              @click="updateStatus4(cart_list.sold, cart_list.id)"
+                              v-model="cart_list.sold"
+                              :label="`Sold: ${cart_list.sold}`"
+                            ></v-switch>
+                            <v-switch
+                              @click="updateStatus3(cart_list.state, cart_list.id)"
+                              color="pink"
+                              v-model="cart_list.state"
+                              :label="`Published: ${cart_list.state}`"
+                            ></v-switch>
+                            <v-switch
+                              color="pink"
+                              @click="updateStatus1(cart_list.Negotiable, cart_list.id)"
+                              v-model="cart_list.Negotiable"
+                              :label="`Negotiable: ${cart_list.Negotiable}`"
+                            ></v-switch>
+                          </div>
+                          <div class="row text-center">
+                            <div>
+                              <v-btn
+                                icon
+                                color="red"
+                                @click="(dialog_delete = true), (item_id = cart_list.id)"
+                                ><v-icon>mdi-delete</v-icon></v-btn
+                              >
+                            </div>
+                            <div>
+                              <v-btn
+                                icon
+                                color="primary"
+                                @click="
+                                  (updateItemDialog = true),
+                                    (item_id = cart_list.id),
+                                    (cloth_image = cart_list.cloth_image),
+                                    (cloth_name = cart_list.cloth_name),
+                                    (cloth_category = cart_list.cloth_category),
+                                    (cloth_gender = cart_list.cloth_gender),
+                                    (cloth_status = cart_list.cloth_status),
+                                    (cloth_type = cart_list.cloth_type),
+                                    (cloth_description = cart_list.cloth_desc),
+                                    (cloth_price = cart_list.cloth_price),
+                                    (cloth_size = cart_list.cloth_size),
+                                    (cloth_discount = cart_list.cloth_discount),
+                                    (S = cart_list.S),
+                                    (M = cart_list.M),
+                                    (L = cart_list.L)
+                                "
+                                ><v-icon>mdi-update</v-icon></v-btn
+                              >
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -672,6 +642,10 @@ export default {
               cloth_status: doc.data().cloth_status,
               cloth_gender: doc.data().cloth_gender,
               cloth_description: doc.data().cloth_desc,
+              state: doc.data().state,
+              status: doc.data().status,
+              Negotiable: doc.data().Negotiable,
+              sold: doc.data().sold,
               discount: doc.data().discount,
               All_size: doc.data().All_size,
               S: doc.data().S,
@@ -713,7 +687,7 @@ export default {
       db.collection("My_Stock")
         .doc(val2)
         .update({
-          S: val,
+          Negotiable: val,
         })
         .then((docRef) => {
           // this.dropState = true;
@@ -736,7 +710,7 @@ export default {
       db.collection("My_Stock")
         .doc(val2)
         .update({
-          M: val,
+          status: val,
         })
         .then((docRef) => {
           // this.dropState = true;
@@ -759,7 +733,7 @@ export default {
       db.collection("My_Stock")
         .doc(val2)
         .update({
-          L: val,
+          state: val,
         })
         .then((docRef) => {
           // this.dropState = true;
@@ -782,10 +756,7 @@ export default {
       db.collection("My_Stock")
         .doc(val2)
         .update({
-          S: val,
-          M: val,
-          L: val,
-          All_size: val,
+          sold: val,
         })
         .then((docRef) => {
           // this.dropState = true;

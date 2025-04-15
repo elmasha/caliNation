@@ -50,7 +50,7 @@
               </div>
             </v-col>
             <v-form ref="form" lazy-validation>
-              <div style="padding:0px:">
+              <div style="padding: 0px">
                 <v-card elevation="0" class="text-center"> </v-card>
                 <br />
               </div>
@@ -66,7 +66,7 @@
                       filter
                       active-class="black--text"
                       :input-value="active"
-                      @click="cloth_type = type.type"
+                      @click="(cloth_type = type.type), checkClothType(type.type)"
                     >
                       {{ type.type }}
                     </v-chip>
@@ -100,16 +100,31 @@
                 <br />
               </div>
 
+              <v-switch
+                color="pink"
+                v-model="negotiable"
+                :label="`Negotiable: ${negotiable}`"
+              ></v-switch>
+
               <v-text-field
                 v-model="cloth_name"
                 :rules="nameRules2"
                 label="Cloth Brand"
               ></v-text-field>
+
               <v-text-field
                 v-model="cloth_size"
                 :counter="10"
                 :rules="nameRules2"
-                label="Cloth size"
+                label="Enter size"
+              ></v-text-field>
+
+              <v-text-field
+                v-show="show_type"
+                v-model="waist_size"
+                :counter="10"
+                :rules="nameRules2"
+                label="Waist size"
               ></v-text-field>
 
               <v-select
@@ -118,7 +133,7 @@
                 v-model="cloth_status"
                 label="Select status"
                 placeholder="eg. New arrival ,Sale"
-                :items="['New arrival', 'Sale', 'Discount', 'Best sellers']"
+                :items="['New arrival', 'Discount']"
               ></v-select>
 
               <v-select
@@ -126,7 +141,7 @@
                 :rules="nameRules2"
                 v-model="cloth_gender"
                 label="Select gender"
-                :items="['Male', 'Female']"
+                :items="['Male', 'Female', 'Unisex']"
               ></v-select>
 
               <v-textarea
@@ -144,50 +159,6 @@
                 label="Item Price"
               ></v-text-field>
 
-              <div class="container text-center">
-                <div class="d-flex">
-                  <v-switch
-                    color="pink"
-                    v-model="S"
-                    @click="All_size = false"
-                    :label="`S ${S}`"
-                  ></v-switch>
-                  <v-switch
-                    color="pink"
-                    @click="All_size = false"
-                    v-model="M"
-                    :label="`M ${M}`"
-                  ></v-switch>
-                  <v-switch
-                    color="pink"
-                    @click="All_size = false"
-                    v-model="L"
-                    :label="`L ${L}`"
-                  ></v-switch>
-                  <v-switch
-                    color="pink"
-                    v-model="All_size"
-                    @click="(S = true), (M = true), (L = true)"
-                    :label="`All size ${All_size}`"
-                  ></v-switch>
-                </div>
-                <div>
-                  <div>
-                    <div class="d-flex">
-                      <span>
-                        <v-icon>mdi-hanger</v-icon>
-                      </span>
-                      <div v-show="S"><h4>S</h4></div>
-                      -
-                      <div v-show="M"><h4>M</h4></div>
-                      -
-                      <div v-show="L"><h4>L</h4></div>
-                      --
-                      <div v-show="All_size"><h4>All size</h4></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <v-btn color="black" block class="white--text" @click="UploadItem">
                 Upload item
               </v-btn>
@@ -224,6 +195,7 @@ export default {
   },
   data() {
     return {
+      waist_size: null,
       S: false,
       M: false,
       L: false,
@@ -240,18 +212,6 @@ export default {
         {
           icon: "mdi-ring",
           title: "Accessories",
-        },
-        {
-          icon: "mdi-home-assistant",
-          title: "Home & Living",
-        },
-        {
-          icon: "mdi-sale",
-          title: "Sale",
-        },
-        {
-          icon: "mdi-cart-heart",
-          title: "Pre-order",
         },
       ],
       searchBrand: "",
@@ -297,6 +257,8 @@ export default {
       id: "",
       idd: "",
       tab: null,
+      show_type: false,
+      negotiable: false,
     };
   },
   mounted() {
@@ -306,6 +268,13 @@ export default {
     this.FetchTypes();
   },
   methods: {
+    checkClothType(val) {
+      if (val == "Trouser") {
+        this.show_type = true;
+      } else {
+        this.show_type = false;
+      }
+    },
     ClearInput() {
       this.cloth_category = "";
       this.cloth_type = "";
@@ -668,6 +637,11 @@ export default {
             All_size: this.All_size,
             cloth_discount: "",
             cloth_id: ID,
+            status: "Available",
+            waist_size: this.waist_size,
+            Negotiable: this.negotiable,
+            state: true,
+            sold: false,
             item_id: ID2,
           })
           .then((docRef) => {
