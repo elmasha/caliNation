@@ -678,7 +678,7 @@ export default {
           this.snackbar = true;
           this.snackbarText = "Cart Cleared..";
           this.showCard = true;
-          this.$router.push("/the-petite-studio");
+          this.$router.push("/");
         })
         .catch((error) => {
           console.error("Error adding document: ", error);
@@ -693,7 +693,6 @@ export default {
         (this.phone_number == "") |
         (this.location == "") |
         (this.landMark == "")
-        
       ) {
         this.snackbar2 = true;
         this.snackbarText2 = "Provide the Details Required";
@@ -742,7 +741,7 @@ export default {
           // this.dropState = true;
           this.snackbar = true;
           this.snackbarText = "Provide Card Details";
-          this.$router.push("/the-petite-studio");
+          this.$router.push("/");
         })
         .catch((error) => {
           console.error("Error adding document: ", error);
@@ -912,7 +911,7 @@ export default {
         this.timerCount = 90;
         this.timerEnabled = false;
         this.viewItemDialog = false;
-        this.$router.push("/the-petite-studio");
+        this.$router.push("/");
       } else {
         this.showCard = true;
         this.snackbar2 = true;

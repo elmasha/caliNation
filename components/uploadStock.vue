@@ -186,6 +186,8 @@
 import Dropzone from "nuxt-dropzone";
 import "nuxt-dropzone/dropzone.css";
 import { uuid } from "vue-uuid";
+import moment from "moment";
+
 import myOrders from "/components/myOrders";
 
 export default {
@@ -195,6 +197,7 @@ export default {
   },
   data() {
     return {
+      moment,
       waist_size: null,
       S: false,
       M: false,
@@ -619,7 +622,7 @@ export default {
         let ID = this.cloth_name + this.cloth_type + this.cloth_size;
         let ID2 = this.cloth_name + this.cloth_type;
         db.collection("My_Stock")
-          .doc(ID)
+          .doc(this.id)
           .set({
             cloth_category: this.cloth_category,
             cloth_type: this.cloth_type,
@@ -643,6 +646,7 @@ export default {
             state: true,
             sold: false,
             item_id: ID2,
+            createdAt: this.moment(new Date()).calendar(),
           })
           .then((docRef) => {
             // this.dropState = true;

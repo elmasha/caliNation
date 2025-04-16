@@ -34,45 +34,23 @@
     <v-app-bar color="white" elevation="0" :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon color="black" @click.stop="drawer = !drawer" />
       <v-spacer />
-      <v-img :src="header" contain height="40" max-width="150"> </v-img>
+      <nuxt-link style="text-decoration: none;" to="/">
+        <v-img :src="header" contain height="40" max-width="150"> </v-img>
+      </nuxt-link>
+      
       <v-spacer />
-      <v-toolbar-title id="nav_title">{{ title }}</v-toolbar-title>
-
-      <nuxt-link class="nuxt-link" :to="`/cartlist/${My_Order_id}`">
+      <nuxt-link style="text-decoration: none;" :to="`/cartlist/${My_Order_id}`">
         <v-btn icon color="black">
           <v-icon>mdi-cart-variant</v-icon>
           <span id="span_count">{{ cartCount }}</span>
         </v-btn>
       </nuxt-link>
 
-      <v-btn color="black" v-show="auth_State" @click="dialog_logout = true" icon>
+      <!-- <v-btn color="black" v-show="auth_State" @click="dialog_logout = true" icon>
         <v-icon>mdi-logout</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-app-bar>
-    <v-row id="header_row" justify="start" align="start">
-      <v-col v-show="false" cols="12" sm="12" md="12" lg="12">
-        <v-card elevation="0">
-          <div class="container text-center">
-            <div>
-              <v-carousel
-                cycle
-                height="70"
-                hide-delimiter-background
-                :show-arrows="false"
-              >
-                <v-carousel-item v-for="(slide, i) in slides" :key="i">
-                  <v-sheet height="100%">
-                    <div class="text-h6">
-                      <span>{{ slide.name }}</span>
-                    </div>
-                  </v-sheet>
-                </v-carousel-item>
-              </v-carousel>
-            </div>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
+   
     <v-row justify="start" align="start">
       <v-col cols="12" sm="12" md="12">
         <v-tabs
@@ -135,10 +113,10 @@
       <v-row>
         <v-col cols="12" sm="12" md="12">
           <div>
-            <v-row justify="center" align="center">
+            <v-row justify="start" align="start">
               <v-col cols="12" sm="12" md="12" lg="12">
                 <div v-show="type_search_layout">
-                  <div class="container pink--text">
+                  <div class="container black--text">
                     <h4>{{ search_t }}</h4>
                   </div>
                   <div class="pa-4">
@@ -161,11 +139,11 @@
               <v-col cols="12" sm="12" md="12">
                 <div class="container">
                   <div class="">
-                    <div class="row" align="start" id="all_items">
+                    <div class="row" align="start" >
                       <div
                         v-for="(all_product, idx) in all_products"
                         :key="idx"
-                        class="col-sm-3"
+                        class="col-sm-4"
                       >
                         <div class="container">
                           <v-card elevation="0" max-width="310">
@@ -211,17 +189,16 @@
                                   "
                                   >Negotiable</strong
                                 >
+                                <strong
+                                  v-show="!all_product.Negotiable"
+                                  style="
+                                    font-size: 0.9rem;
+                                    font-weight: 300;
+                                    color: white;
+                                  "
+                                  >{{"]"}}</strong
+                                >
                                 <v-spacer></v-spacer>
-                              </div>
-
-                              <div>
-                                <v-row>
-                                  <v-col
-                                    cols="6"
-                                    v-show="!checkSizeState(all_product.cloth_category)"
-                                    >{{ all_product.cloth_size }}</v-col
-                                  >
-                                </v-row>
                               </div>
                             </div>
                             <div>
@@ -418,7 +395,9 @@
               <div class="">
                 <div class="container">
                   <div class="d-flex">
-                    <div class="text-center container"></div>
+                    <div class="text-start container">
+                      <h1>Add to Cart</h1>
+                    </div>
                     <v-spacer></v-spacer>
                     <v-btn
                       icon
@@ -454,20 +433,11 @@
                         <div class="container">
                           <div>
                             <div class="d-flex">
+                              <span>Size__</span>
+                              <br />
                               <span>
-                                <v-icon color="black">mdi-hanger</v-icon>
+                                {{ cloth_size }}
                               </span>
-                              <div v-show="S">
-                                <h4><strong>S</strong></h4>
-                              </div>
-                              -
-                              <div v-show="M">
-                                <h4><strong>M</strong></h4>
-                              </div>
-                              -
-                              <div v-show="L">
-                                <h4><strong>L</strong></h4>
-                              </div>
                             </div>
                           </div>
                         </div>
@@ -475,58 +445,21 @@
                       <hr style="color: #808080" />
                       <div class="container">
                         <h3>Available a size</h3>
-                        <v-radio-group v-model="row" row>
-                          <v-radio
-                            v-show="S"
-                            @click="select_size = 'S'"
-                            label=" S"
-                            value="S"
-                          ></v-radio>
-                          <v-radio
-                            v-show="M"
-                            label=" M"
-                            @click="select_size = 'M'"
-                            value="M"
-                          ></v-radio>
-                          <v-radio
-                            v-show="L"
-                            label=" L"
-                            @click="select_size = 'L'"
-                            value="L"
-                          ></v-radio>
-                          <v-radio
-                            v-show="All_size"
-                            label="All size"
-                            @click="select_size = 'All size'"
-                            value="All size"
-                          ></v-radio>
-                        </v-radio-group>
+                        <span>
+                          {{ cloth_size }}
+                        </span>
                       </div>
 
-                      <!-- <div class="container" v-show="false">
-                        <h3>Select Quantity</h3>
+                      <div class="container">
                         <div class="d-flex">
-                          <span
-                            ><v-btn id="minus" color="black" icon @click="decrease"
-                              ><v-icon>mdi-minus</v-icon></v-btn
-                            ></span
-                          >
-                          <h2>
-                            <p>{{ count }}</p>
-                          </h2>
-                          <v-btn id="plus" color="black" icon @click="increase"
-                            ><v-icon>mdi-plus</v-icon></v-btn
-                          >
-                        </div>
-                        <div class="d-flex">
-                          <h4>
-                            For {{ count }} you will pay
+                          <p style="color:grey">
+                            For {{ count }} you will pay{{ " " }}
                             <h3>
-                              <strong>{{ total_amount }} Ksh </strong>
+                              <strong>{{ cloth_price}} Ksh </strong>
                             </h3>
-                          </h4>
+                          </p>
                         </div>
-                      </div> -->
+                      </div>
                       <v-btn
                         density="compact"
                         color="black"

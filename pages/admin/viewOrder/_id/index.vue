@@ -1,10 +1,12 @@
-<template >
+<template>
   <div class="container">
     <div class="container">
       <div class="d-flex">
         <nuxt-link class="nuxt-link" to="/admin">
-          <v-icon large> mdi-arrow-left </v-icon></nuxt-link
-        >
+          <v-chip large color="white" style="color: black">
+            <v-icon large color="black">mdi-arrow-left-circle</v-icon>
+          </v-chip>
+        </nuxt-link>
         <v-spacer></v-spacer>
         <v-btn icon color="black" @click="Refresh"
           ><v-icon large>mdi-refresh</v-icon></v-btn
@@ -183,14 +185,7 @@
     <v-snackbar color="white--text" :timeout="4000" v-model="snackbar" center>
       {{ snackbarText }}
     </v-snackbar>
-    <v-snackbar
-      color="red"
-      :timeout="4000"
-      v-model="snackbar2"
-      outlined
-      bottom
-      center
-    >
+    <v-snackbar color="red" :timeout="4000" v-model="snackbar2" outlined bottom center>
       {{ snackbarText2 }}
     </v-snackbar>
   </div>
@@ -380,8 +375,7 @@ export default {
         .then((queryResult) => {
           queryResult.forEach((doc) => {
             console.log("user details", doc.data());
-            (this.user_name = doc.data().user_name),
-              (this.email = doc.data().email);
+            (this.user_name = doc.data().user_name), (this.email = doc.data().email);
             this.phoneNumber = doc.data().phone;
             this.order_status = doc.data().order_status;
             this.TrackOrder(doc.data().order_status);
@@ -418,7 +412,7 @@ export default {
   },
 };
 </script>
-<style >
+<style>
 .nuxt-link {
   text-decoration-line: none;
 }

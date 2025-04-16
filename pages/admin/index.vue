@@ -28,31 +28,18 @@
 
           <div class="" style="margin: 8px">
             <nuxt-link id="nuxt-link" to="/the-organized-edits"
-              ><v-icon medium>mdi-puzzle-edit-outline</v-icon
-              ><span id="nav_span"></span>
+              ><v-icon medium>mdi-puzzle-edit-outline</v-icon><span id="nav_span"></span>
             </nuxt-link>
           </div>
           <div class="" style="margin: 8px">
             <nuxt-link id="nuxt-link" to="/the-hostess"
-              ><v-icon medium>mdi-account-injury</v-icon
-              ><span id="nav_span"></span>
+              ><v-icon medium>mdi-account-injury</v-icon><span id="nav_span"></span>
             </nuxt-link>
           </div>
         </div>
 
         <v-card elevation="0">
           <v-tabs color="pink" :show-arrows="true">
-            <v-tab
-              @click="
-                (order_state = false),
-                  (upload_state = false),
-                  (member_state = true),
-                  (booking_state = false),
-                  (discount_state = false)
-              "
-              value="one"
-              >Registered members</v-tab
-            >
             <v-tab
               value="two"
               @click="
@@ -63,8 +50,9 @@
                   (discount_state = false)
               "
             >
-              Live Orders</v-tab
+              Recent Orders</v-tab
             >
+
             <v-tab
               value="three"
               @click="
@@ -89,25 +77,22 @@
             >
               My Stock</v-tab
             >
+
             <v-tab
-              value="three"
               @click="
                 (order_state = false),
                   (upload_state = false),
-                  (member_state = false),
-                  (discount_state = false),
-                  (booking_state = true)
+                  (member_state = true),
+                  (booking_state = false),
+                  (discount_state = false)
               "
-            >
-              Bookings</v-tab
+              value="one"
+              >Registered members</v-tab
             >
           </v-tabs>
         </v-card>
         <div>
           <v-row>
-            <v-col v-show="member_state" md="12" cols="12" lg="12" sm="12">
-              <members />
-            </v-col>
             <v-col v-show="order_state" md="12" cols="12" lg="12" sm="12">
               <myOrders />
             </v-col>
@@ -120,17 +105,14 @@
             <v-col v-show="booking_state" md="12" cols="12" lg="12" sm="12">
               <bookings />
             </v-col>
+            <v-col v-show="member_state" md="12" cols="12" lg="12" sm="12">
+              <members />
+            </v-col>
           </v-row>
         </div>
       </template>
     </div>
-    <v-snackbar
-      color="green accent-8"
-      :timeout="2000"
-      v-model="snackbar"
-      bottom
-      outlined
-    >
+    <v-snackbar color="green accent-8" :timeout="2000" v-model="snackbar" bottom outlined>
       {{ snackbarText }}
     </v-snackbar>
     <v-snackbar
@@ -164,10 +146,10 @@ export default {
   data() {
     return {
       empty_user: require("@/assets/user.png"),
-      member_state: true,
+      member_state: false,
       booking_state: false,
       discount_state: false,
-      order_state: false,
+      order_state: true,
       upload_state: false,
       tab: null,
       searchBrand: "",
