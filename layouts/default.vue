@@ -1,10 +1,8 @@
 <template>
   <v-app dark>
-
-      <v-main>
-        <Nuxt />
-      </v-main>
-
+    <v-main>
+      <Nuxt />
+    </v-main>
   </v-app>
 </template>
 
@@ -42,38 +40,6 @@ export default {
   font-family: "Lato";
 }
 
-body {
-  align-items: center;
-  min-height: 100vh;
-  background: #000;
-}
-.section {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2px;
-  flex-wrap: wrap;
-  overflow: hidden;
-}
-.section::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(#000, #0f0, #000);
-  animation: animate 5s linear infinite;
-}
-@keyframes animate {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(100%);
-  }
-}
 .section span {
   position: relative;
   display: block;

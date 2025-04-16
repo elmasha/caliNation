@@ -41,8 +41,11 @@
       <v-spacer />
       <nuxt-link style="text-decoration: none;" :to="`/cartlist/${My_Order_id}`">
         <v-btn icon color="black">
-          <v-icon>mdi-cart-variant</v-icon>
-          <span id="span_count">{{ cartCount }}</span>
+          <div class="d-flex">
+            <v-icon>mdi-cart-variant</v-icon>
+            <span id="span_count">{{ cartCount }}</span>
+          </div>
+          
         </v-btn>
       </nuxt-link>
 
@@ -62,6 +65,15 @@
         >
           <v-tabs-slider color="pink"></v-tabs-slider>
 
+          <v-tab
+            @click="refreshAll()"
+            color="pink"
+            class="black--text"
+            dark
+          >
+            <v-icon>mdi-format-list-text</v-icon>
+            All
+          </v-tab>
           <v-tab
             @click="fetchSearch28('New Arrival'), (type_search_layout = false)"
             color="pink"
@@ -87,9 +99,11 @@
             </template>
             <v-list>
               <v-list-item v-for="(item, ii) in items22" :key="ii">
-                <v-list-item-title @click="fetchGenderState(item.title)">{{
+                <v-list-item-title @click="fetchGenderState(item.title)">
+                  <v-btn color="blue" text>{{
                   item.title
-                }}</v-list-item-title>
+                }}</v-btn>
+                </v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -143,10 +157,10 @@
                       <div
                         v-for="(all_product, idx) in all_products"
                         :key="idx"
-                        class="col-sm-4"
+                        class="col-md-3 "
                       >
                         <div class="container">
-                          <v-card elevation="0" max-width="310">
+                          <v-card elevation="0" >
                             <v-img
                               :src="all_product.cloth_image"
                               class="white--text align-end"
@@ -1704,6 +1718,12 @@ export default {
           });
         });
     },
+    refreshAll(){
+      this.FetchPricing();
+    this.FetchProducts2();
+    this.FetchTypes();
+    this.checkUserID();
+    }
   },
   async created() {},
   watch: {
@@ -1864,10 +1884,10 @@ export default {
 }
 #all_items {
   --scrollbarBG: #ffffff;
-  --thumbBG: #faa3ab;
+  --thumbBG: #ffffff;
   scrollbar-width: thin;
   scrollbar-color: var(--thumbBG) var(--scrollbarBG);
-  overflow-y: auto;
+  overflow-y: hidden;
   width: 100%;
   align-items: center;
   bottom: 0;
