@@ -45,8 +45,8 @@
             <div class="container">
               <div v-show="showCard2">
                 <h3 style="color: green">Pochi la Biashara</h3>
-                <h4>Elmasha Omondi</h4>
-                <h4>Phone No: 52480550017</h4>
+                <h4>Evans Odour</h4>
+                <h4>Phone No: 0718 015225</h4>
 
                 <!-- <div class="d-flex">
                   <h4>NB:</h4>
