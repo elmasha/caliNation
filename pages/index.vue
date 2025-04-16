@@ -1386,6 +1386,7 @@ export default {
         const db = this.$fire.firestore;
         this.all_products.splice(this.all_products);
         db.collection("My_Stock")
+        .where("sold", "==", false)
           .get()
           .then((queryResult6) => {
             queryResult6.forEach((doc) => {
@@ -1415,6 +1416,7 @@ export default {
         const db = this.$fire.firestore;
         this.products.splice(this.products);
         db.collection("My_Stock")
+        .where("sold", "==", false)
           .where("cloth_category", "==", this.cloth_cat)
           .get()
           .then((queryResult6) => {
