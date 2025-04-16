@@ -192,17 +192,22 @@
                                   {{ all_product.cloth_name }}
                                 </h2>
                               </div>
-                              <div class="d-flex" style="margin: 8px">
-                                <!-- <v-icon small>mdi-chat</v-icon> -->
-                                <strong
+                              <div class="d-flex" style="margin: 6px">
+                                <v-icon color="green" small>mdi-chat</v-icon>
+                                <a style="text-decoration:none; margin-start:8px" :href="`https://api.whatsapp.com/send?phone=254718015225&text=Negotiate on ${all_product.cloth_name}, Size: ${all_product.cloth_size},Price: ${all_product.cloth_price}`">
+                                  <!-- https://wa.link/2lg3lf -->
+                                  
+                                  <strong
                                   v-show="all_product.Negotiable"
                                   style="
                                     font-size: 0.9rem;
-                                    font-weight: 300;
+                                    font-weight: 500;
                                     color: green;
                                   "
                                   >Negotiable</strong
                                 >
+                                </a>
+                                
                                 <strong
                                   v-show="!all_product.Negotiable"
                                   style="
@@ -305,7 +310,7 @@
         </v-col>
         <v-fab-transition>
           <v-btn color="#25d366" class="pink--text" fab dark medium fixed bottom right>
-            <a id="mainwhapp" href="https://wa.me/message/HCBCYVGTNWCUC1">
+            <a id="mainwhapp" href="https://wa.link/2lg3lf">
               <v-icon color="white" large>mdi-whatsapp</v-icon>
             </a>
           </v-btn>
