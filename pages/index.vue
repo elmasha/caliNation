@@ -153,7 +153,7 @@
               <v-col cols="12" sm="12" md="12">
                 <div class="container">
                   <div class="">
-                    <v-card elevation="0" >
+                    <v-card elevation="0" :height="height+100">
                       <div class="row" align="start" >
                       <div
                         v-for="(all_product, idx) in all_products"
