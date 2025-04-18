@@ -26,7 +26,8 @@
           <v-col cols="12" md="4">
             <div class="container text-center">
               <span style="font-size: 0.6rem; color: grey"> © Copyright Cali-Nation</span>
-              <span style="font-size: 0.6rem; color: grey"> All Rights Reserved</span>
+              <span style="font-size: 0.6rem; color: grey"> All Rights Reserved</span
+              ><br />
               <span style="font-size: 0.6rem; color: grey">
                 Designed by Elmasha tech solutions</span
               >
