@@ -51,7 +51,7 @@
             <div class="logo py-0 row justify-center">
               <div
                 v-scroll.self="onScroll"
-                class="with-header row container overflow-y-auto"
+                class="with-header row overflow-y-auto"
                 align="center"
                 justify="center"
                 height="500"
@@ -70,7 +70,7 @@
                     justify="center"
                     elevation="0"
                     id=""
-                    height="350"
+                    height="300"
                     class="car_card mx-auto my-12 text-center"
                     max-width="300"
                   >
@@ -135,7 +135,10 @@
                               :label="`Negotiable: ${cart_list.Negotiable}`"
                             ></v-switch>
                           </div>
-                          <div class="row text-center">
+                          <div
+                            class="row text-center"
+                            style="background-color: black; border-radius: 2px"
+                          >
                             <div>
                               <v-btn
                                 icon

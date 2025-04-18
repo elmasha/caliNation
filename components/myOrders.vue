@@ -111,8 +111,16 @@
               </template>
               <v-date-picker v-model="date" type="month" no-title scrollable>
                 <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
-                <v-btn text color="primary" @click="$refs.menu.save(date)"> OK </v-btn>
+                <v-btn text color="primary" @click="(menu = false), FetchTotalSale()">
+                  Cancel
+                </v-btn>
+                <v-btn
+                  text
+                  color="primary"
+                  @click="$refs.menu.save(date), FetchTotalSale22(date)"
+                >
+                  OK
+                </v-btn>
               </v-date-picker>
             </v-menu>
           </v-col>
@@ -320,9 +328,29 @@ export default {
       );
     },
     FetchTotalSale() {
+      this.totalSale = 0;
       const db = this.$fire.firestore;
       db.collection("Order_request")
         .where("cart", "==", false)
+        .get()
+        .then((queryResult) => {
+          queryResult.forEach((doc) => {
+            if (!doc.exists) {
+              throw "Document does not exist!";
+            }
+
+            this.totalSale += doc.data().total;
+            console.log("Total Sale ", this.totalSale);
+          });
+        });
+    },
+    FetchTotalSale22(val) {
+      let vall = this.moment(new Date(val)).format("MMM YYY");
+      this.totalSale = 0;
+      const db = this.$fire.firestore;
+      db.collection("Order_request")
+        .where("cart", "==", false)
+        .where("month", "==", vall)
         .get()
         .then((queryResult) => {
           queryResult.forEach((doc) => {

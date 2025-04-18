@@ -683,8 +683,9 @@ export default {
           // this.dropState = true;
           this.snackbar = true;
           this.snackbarText = "Cart Cleared..";
-          this.showCard = true;
-          this.$router.push("/");
+
+          this.FetchItem22();
+          // this.$router.push("/");
         })
         .catch((error) => {
           console.error("Error adding document: ", error);
@@ -757,7 +758,22 @@ export default {
           this.snackbarText2 = error;
         });
     },
-
+    updateStatus4(val) {
+      const db = this.$fire.firestore;
+      db.collection("My_Stock")
+        .doc(val)
+        .update({
+          sold: true,
+        })
+        .then((docRef) => {
+          this.showCard = true;
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+          this.snackbar2 = true;
+          this.snackbarText2 = error;
+        });
+    },
     async DeleteCart() {
       const db = this.$fire.firestore;
       var cart_ref = db
@@ -816,7 +832,22 @@ export default {
           });
         });
     },
-
+    FetchItem22() {
+      const db = this.$fire.firestore;
+      db.collection("Order_request")
+        .doc(this.$route.params.id)
+        .collection("item_list")
+        .get()
+        .then((queryResult) => {
+          queryResult.forEach((doc) => {
+            if (!doc.exists) {
+              throw "Document does not exist!";
+            }
+            this.updateStatus4(doc.data().id);
+            console.log("update details", queryResult.size);
+          });
+        });
+    },
     FetchIteAndDelete() {
       this.progress_bar = true;
       const db = this.$fire.firestore;

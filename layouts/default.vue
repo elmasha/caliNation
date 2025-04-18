@@ -2,41 +2,39 @@
   <v-app dark>
     <v-main>
       <Nuxt />
-      <footer bottom fixed>
-        <v-card color="black" dark>
-          <v-row>
-            <v-col cols="6" md="4">
-              <div class="container">
-                <h4 style="font-weight: 200">Cali-Nation</h4>
-                <p style="font-size: 0.6rem; color: grey">The right place to shop</p>
-                <div class="d-flex"></div>
-              </div>
-            </v-col>
-            <v-col cols="6" md="4">
-              <div class="container">
-                <h4 style="font-weight: 200">Follow us on</h4>
-                <div class="d-flex">
-                  <a href="" style="margin: 2px"> <v-icon small>mdi-facebook</v-icon></a>
-                  <a href="" style="margin: 2px"> <v-icon small>mdi-instagram</v-icon></a>
-                  <a href="" style="margin: 2px"> <v-icon small>mdi-whatsapp</v-icon></a>
-                </div>
-              </div>
-            </v-col>
-            <v-col cols="12" md="4">
-              <div class="container text-center">
-                <span style="font-size: 0.6rem; color: grey">
-                  © Copyright Cali-Nation</span
-                >
-                <span style="font-size: 0.6rem; color: grey"> All Rights Reserved</span>
-                <span style="font-size: 0.6rem; color: grey">
-                  Designed by Elmasha tech solutions</span
-                >
-              </div>
-            </v-col>
-          </v-row>
-        </v-card>
-      </footer>
     </v-main>
+    <footer bottom fixed>
+      <v-card color="black" dark>
+        <v-row>
+          <v-col cols="6" md="4">
+            <div class="container">
+              <h4 style="font-weight: 200">Cali-Nation</h4>
+              <p style="font-size: 0.6rem; color: grey">The right place to shop</p>
+              <div class="d-flex"></div>
+            </div>
+          </v-col>
+          <v-col cols="6" md="4">
+            <div class="container">
+              <h4 style="font-weight: 200">Follow us on</h4>
+              <div class="d-flex">
+                <a href="" style="margin: 2px"> <v-icon small>mdi-facebook</v-icon></a>
+                <a href="" style="margin: 2px"> <v-icon small>mdi-instagram</v-icon></a>
+                <a href="" style="margin: 2px"> <v-icon small>mdi-whatsapp</v-icon></a>
+              </div>
+            </div>
+          </v-col>
+          <v-col cols="12" md="4">
+            <div class="container text-center">
+              <span style="font-size: 0.6rem; color: grey"> © Copyright Cali-Nation</span>
+              <span style="font-size: 0.6rem; color: grey"> All Rights Reserved</span>
+              <span style="font-size: 0.6rem; color: grey">
+                Designed by Elmasha tech solutions</span
+              >
+            </div>
+          </v-col>
+        </v-row>
+      </v-card>
+    </footer>
   </v-app>
 </template>
 

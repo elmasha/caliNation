@@ -279,6 +279,7 @@
                                     (count = 1),
                                     (select_size = all_product.cloth_size),
                                     (cloth_image = all_product.cloth_image),
+                                    (clothId = all_product.id),
                                     (cloth_name = all_product.cloth_name),
                                     (cloth_type = all_product.cloth_type),
                                     (cloth_price = all_product.cloth_price),
@@ -689,6 +690,7 @@ export default {
       search_type: null,
       height:0,
       deliver: "mdi-moped",
+      clothId:null,
     };
   },
   computed: {
@@ -1131,7 +1133,7 @@ export default {
           item_image: this.cloth_image,
           item_quantity: this.count,
           item_brand: this.cloth_name,
-          item_id: ID,
+          item_id: this.clothId,
           item_price: this.total_amount,
         })
         .then((docRef) => {
