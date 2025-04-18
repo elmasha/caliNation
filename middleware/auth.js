@@ -1,5 +1,5 @@
 export default function ({ store, app, route, redirect }) {
-  if (route.path === "/admin") {
+  if (route.path === "/1005/admin") {
     //  we are on a protected route
     if (app.$fire.auth.currentUser == null) {
       //take them to sign in page
