@@ -449,9 +449,14 @@
 </template>
 <script>
 import axios from "axios";
+import moment from "moment";
+import numeral from "numeral";
+
 export default {
   data() {
     return {
+      moment,
+      numeral,
       county: null,
       location: null,
       checkoutUrl: "",
@@ -652,6 +657,7 @@ export default {
             payment_method: this.pay_method,
             order_status: 0,
             timestamp: new Date(),
+            createdAt: new Date(),
           })
           .then((docRef) => {
             // this.dropState = true;
@@ -712,6 +718,8 @@ export default {
             payment_method: this.pay_method,
             order_status: 0,
             timestamp: new Date(),
+            createdAt: this.moment(new Date()).calendar(),
+            month: this.moment(new Date(date)).format("MMM YYYY"),
             cart: false,
             paid: true,
             total: this.total,

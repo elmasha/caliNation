@@ -18,44 +18,103 @@
         </div>
 
         <v-row>
-          <v-col cols="12" md="4" lg="4" sm="4">
+          <v-col cols="12" md="3" lg="3" sm="3">
             <v-card color="black">
+              <br />
+              <br />
               <v-card-actions>
                 <div class="container">
                   <v-btn color="warning" icon large>
                     <v-icon>mdi-package</v-icon>
                     <h2 id="o_count">{{ all_order }}</h2>
                   </v-btn>
-                  <h4 style="color: white">Total Orders</h4>
+                  <h4 style="color: white">Orders</h4>
                 </div>
               </v-card-actions>
             </v-card>
           </v-col>
-          <v-col cols="12" md="4" lg="4" sm="4">
+          <v-col cols="12" md="3" lg="3" sm="3">
             <v-card>
+              <br />
+              <br />
               <v-card-actions>
                 <div class="container">
                   <v-btn color="primary" icon large>
                     <v-icon>mdi-timeline-clock-outline</v-icon>
                     <h2 id="o_count">{{ pending }}</h2>
                   </v-btn>
-                  <h4>Total Pending</h4>
+                  <h4>Pending</h4>
                 </div>
               </v-card-actions>
             </v-card>
           </v-col>
-          <v-col cols="12" md="4" lg="4" sm="4">
+          <v-col cols="12" md="3" lg="3" sm="3">
             <v-card>
+              <br />
+              <br />
               <v-card-actions>
                 <div class="container">
                   <v-btn color="green" icon large>
                     <v-icon>mdi-truck-fast</v-icon>
                     <h2 id="o_count">{{ dispatched }}</h2>
                   </v-btn>
-                  <h4>Total Dispatched</h4>
+                  <h4>Dispatched</h4>
                 </div>
               </v-card-actions>
             </v-card>
+          </v-col>
+          <v-col cols="12" md="3" lg="3" sm="3">
+            <v-card color="black" dark>
+              <v-card-actions
+                ><v-spacer></v-spacer>
+                <div class="d-flex">
+                  <span style="margin-top: 8px; font-size: 0.7rem">
+                    {{ moment(new Date(date)).format("MMM YYYY") }}
+                  </span>
+                  <v-btn color="green" icon
+                    ><v-icon color="gree">mdi-calendar-month-outline</v-icon></v-btn
+                  >
+                </div>
+              </v-card-actions>
+              <v-card-actions>
+                <div class="container">
+                  <v-btn color="green" icon large>
+                    <div class="d-flex">
+                      <h2 id="o_count">{{ numeral(totalSale).format("0,0.0") }}</h2>
+                    </div>
+                  </v-btn>
+                  <h4>Total Sale</h4>
+                </div>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+          <v-col cols="11" sm="5">
+            <v-menu
+              ref="menu"
+              v-model="menu"
+              :close-on-content-click="false"
+              :return-value.sync="date"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="searchDate"
+                  label="Pick a month"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="date" type="month" no-title scrollable>
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
+                <v-btn text color="primary" @click="$refs.menu.save(date)"> OK </v-btn>
+              </v-date-picker>
+            </v-menu>
           </v-col>
         </v-row>
       </div>
@@ -105,10 +164,17 @@
 </template>
 <script>
 import moment from "moment";
+import numeral from "numeral";
+
 export default {
   name: "myOrders",
   data() {
     return {
+      date: new Date().toISOString().substr(0, 7),
+      menu: false,
+      modal: false,
+      searchDate: null,
+      numeral,
       moment,
       pending: 0,
       all_order: 0,
@@ -131,6 +197,7 @@ export default {
         { text: "View Items", value: "actions", sortable: false },
       ],
       orders: [],
+      totalSale: 0,
     };
   },
   methods: {
@@ -162,6 +229,7 @@ export default {
     FetchPendingCount() {
       const db = this.$fire.firestore;
       db.collection("Order_request")
+        .where("cart", "==", false)
         .where("order_status", "==", 0)
         .get()
         .then((queryResult) => {
@@ -177,6 +245,7 @@ export default {
     FetchDispatchCount() {
       const db = this.$fire.firestore;
       db.collection("Order_request")
+        .where("cart", "==", false)
         .where("order_status", "==", 1)
         .get()
         .then((queryResult) => {
@@ -189,6 +258,7 @@ export default {
           });
         });
     },
+
     checkStatus(val) {
       console.log(val);
       if (val == 0) {
@@ -249,17 +319,35 @@ export default {
         value.toString().toLowerCase().indexOf(search) !== -1
       );
     },
+    FetchTotalSale() {
+      const db = this.$fire.firestore;
+      db.collection("Order_request")
+        .where("cart", "==", false)
+        .get()
+        .then((queryResult) => {
+          queryResult.forEach((doc) => {
+            if (!doc.exists) {
+              throw "Document does not exist!";
+            }
+
+            this.totalSale += doc.data().total;
+            console.log("Total Sale ", this.totalSale);
+          });
+        });
+    },
   },
   created() {
     this.checkUser();
     this.FetchOrderCount();
     this.FetchPendingCount();
     this.FetchDispatchCount();
+    this.FetchTotalSale();
   },
   watch: {
     FetchOrderCount() {
       const db = this.$fire.firestore;
       db.collection("Order_request")
+        .where("cart", "==", false)
         .get()
         .then((queryResult) => {
           queryResult.forEach((doc) => {
@@ -275,6 +363,7 @@ export default {
       const db = this.$fire.firestore;
       db.collection("Order_request")
         .where("order_status", "==", 0)
+        .where("cart", "==", false)
         .get()
         .then((queryResult) => {
           queryResult.forEach((doc) => {
@@ -289,6 +378,7 @@ export default {
     FetchDispatchCount() {
       const db = this.$fire.firestore;
       db.collection("Order_request")
+        .where("cart", "==", false)
         .where("order_status", "==", 1)
         .get()
         .then((queryResult) => {

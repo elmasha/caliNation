@@ -37,7 +37,7 @@
       <nuxt-link style="text-decoration: none;" to="/">
         <v-img :src="header" contain height="40" max-width="150"> </v-img>
       </nuxt-link>
-      
+
       <v-spacer />
       <nuxt-link style="text-decoration: none;" :to="`/cartlist/${My_Order_id}`">
         <v-btn icon color="black">
@@ -45,7 +45,7 @@
             <v-icon>mdi-cart-variant</v-icon>
             <span id="span_count">{{ cartCount }}</span>
           </div>
-          
+
         </v-btn>
       </nuxt-link>
 
@@ -53,7 +53,7 @@
         <v-icon>mdi-logout</v-icon>
       </v-btn> -->
     </v-app-bar>
-   
+
     <v-row justify="start" align="start">
       <v-col cols="12" sm="12" md="12">
         <v-tabs
@@ -124,7 +124,7 @@
       </v-col>
     </v-row>
     <div>
-      <v-row>
+      <v-row v-resize="onResize">
         <v-col cols="12" sm="12" md="12">
           <div>
             <v-row justify="start" align="start">
@@ -153,7 +153,8 @@
               <v-col cols="12" sm="12" md="12">
                 <div class="container">
                   <div class="">
-                    <div class="row" align="start" >
+                    <v-card elevation="0" :height="height+100">
+                      <div class="row" align="start" >
                       <div
                         v-for="(all_product, idx) in all_products"
                         :key="idx"
@@ -196,7 +197,7 @@
                                 <v-icon color="green" small>mdi-chat</v-icon>
                                 <a style="text-decoration:none; margin-start:8px" :href="`https://api.whatsapp.com/send?phone=254718015225&text=Negotiate on ${all_product.cloth_name}, Size: ${all_product.cloth_size},Price: ${all_product.cloth_price}`">
                                   <!-- https://wa.link/2lg3lf -->
-                                  
+
                                   <strong
                                   v-show="all_product.Negotiable"
                                   style="
@@ -207,7 +208,7 @@
                                   >Negotiable</strong
                                 >
                                 </a>
-                                
+
                                 <strong
                                   v-show="!all_product.Negotiable"
                                   style="
@@ -302,6 +303,8 @@
                         </div>
                       </div>
                     </div>
+                    </v-card>
+                    
                   </div>
                 </div>
               </v-col>
@@ -533,6 +536,10 @@ export default {
   data() {
     return {
       numeral,
+      windowSize: {
+        x: 0,
+        y: 0,
+      },
       global_category: "",
       row: null,
       select_size: "",
@@ -680,6 +687,7 @@ export default {
       search_cat: null,
       search_gender: null,
       search_type: null,
+      height:0,
       deliver: "mdi-moped",
     };
   },
@@ -691,6 +699,18 @@ export default {
     },
   },
   methods: {
+    onResize() {
+      this.windowSize = {
+        x: window.innerWidth,
+        y: window.innerHeight,
+      };
+      console.log("size", this.windowSize.x);
+      this.height = this.windowSize.y;
+      if (this.windowSize.x < 950) {
+      } else {
+      }
+      return this.windowSize;
+    },
     checkTypeState(val) {
       if (val == "Trouser") {
         return true;

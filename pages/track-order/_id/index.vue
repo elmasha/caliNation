@@ -1,8 +1,8 @@
-<template >
+<template>
   <div class="container">
     <div class="container">
       <div class="d-flex">
-        <nuxt-link class="nuxt-link" to="/the-petite-studio">
+        <nuxt-link class="nuxt-link" to="/">
           <v-icon large> mdi-arrow-left </v-icon></nuxt-link
         >
         <v-spacer></v-spacer>
@@ -11,7 +11,7 @@
         >
       </div>
     </div>
-    <div class="container text-center"><h3>Track My Order</h3></div>
+    <div class="container text-center"><h3>Track Your Order</h3></div>
     <v-row>
       <v-col cols="12" md="12" lg="12" sm="12">
         <v-card class="mx-auto" light min-width="300" elevation="0">
@@ -179,14 +179,7 @@
     <v-snackbar color="white--text" :timeout="4000" v-model="snackbar" center>
       {{ snackbarText }}
     </v-snackbar>
-    <v-snackbar
-      color="red"
-      :timeout="4000"
-      v-model="snackbar2"
-      outlined
-      bottom
-      center
-    >
+    <v-snackbar color="red" :timeout="4000" v-model="snackbar2" outlined bottom center>
       {{ snackbarText2 }}
     </v-snackbar>
   </div>
@@ -399,8 +392,7 @@ export default {
         .then((queryResult) => {
           queryResult.forEach((doc) => {
             console.log("user details", doc.data());
-            (this.user_name = doc.data().user_name),
-              (this.email = doc.data().email);
+            (this.user_name = doc.data().user_name), (this.email = doc.data().email);
             this.phoneNumber = doc.data().phone;
             this.order_status = doc.data().order_status;
             this.TrackOrder(doc.data().order_status);
@@ -436,7 +428,7 @@ export default {
   },
 };
 </script>
-<style >
+<style>
 .nuxt-link {
   text-decoration-line: none;
   color: #000;
